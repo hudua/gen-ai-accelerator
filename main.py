@@ -25,6 +25,7 @@ document = {
     "file_name": file_name,
     "file_name_chunk": file_name_chunk, #id
     "content_text": data,
+    "summary": summary_str,
     "vector": embedding_vec
 }
 
