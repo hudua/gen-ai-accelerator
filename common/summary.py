@@ -27,11 +27,3 @@ def generate_prompt(prompt, system_message, aoi_key, can_aoai_url, model, aoai_v
     prediction = json.loads(result.text)["choices"][0]["message"]["content"]
 
     return prediction
-
-with open('summary-prompt.txt', 'r') as file:
-    prompt = file.read()
-
-data = ''
-prompt = prompt + data
-
-generate_prompt(prompt,...)
