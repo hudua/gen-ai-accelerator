@@ -2,13 +2,13 @@ import requests
 import json
 import datetime
 import uuid
-def generate_prompt(prompt, system_message, aoai_key, can_aoai_url, model, aoai_version_completion):
+def generate_prompt(prompt, system_message, aoi_key, can_aoai_url, model, aoai_version_completion):
     
     # Define the deployment name and base URL for Azure OpenAI service  
 
     headers = {  
         "Content-Type": "application/json",  
-        "api-key": aoai_key
+        "api-key": aoi_key
     }
     body = {
         "messages": [
