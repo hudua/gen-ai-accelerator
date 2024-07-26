@@ -1,5 +1,5 @@
 param projectcode string
-param deployazureopenai bool = True
+param deployazureopenai bool = true
 
 var projectcodenodashes = replace(projectcode, '-', '')
 var location string = resourceGroup().location
