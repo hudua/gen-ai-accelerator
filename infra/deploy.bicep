@@ -1,4 +1,5 @@
 param projectcode string
+param deployazureopenai bool = True
 
 var projectcodenodashes = replace(projectcode, '-', '')
 var location string = resourceGroup().location
@@ -42,7 +43,7 @@ resource azure_search_service 'Microsoft.Search/searchServices@2020-08-01' = {
   }
 }
 
-resource open_ai 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
+resource open_ai 'Microsoft.CognitiveServices/accounts@2023-05-01' = if (deployazureopenai) {
   name: openAIName
   location: 'canadaeast'
   kind: 'OpenAI'
