@@ -1,11 +1,11 @@
 
 param location string = resourceGroup().location
-var keyVaultName = '<projectcode>-hudua-dev-kv'
-var searchName = '<projectcode>-hudua-dev-ais'
-var openAIName = '<projectcode>-hudua-dev-oai'
-var cosmosName = '<projectcode>-hudua-dev-csdb'
-var storageAccountName = '<projectcode>huduadevsa'
-var appServicePlanName = '<projectcode>-hudua-dev-asp'
+var keyVaultName = '<projectcode>-kv'
+var searchName = '<projectcode>-ais'
+var openAIName = '<projectcode>-oai'
+var cosmosName = '<projectcode>-csdb'
+var storageAccountName = '<projectcode>sa'
+var appServicePlanName = '<projectcode>-asp'
 
 resource azure_key_vault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: keyVaultName
