@@ -33,7 +33,7 @@ resource azure_key_vault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     enableRbacAuthorization: true
     networkAcls: {
       bypass: 'AzureServices'
-      defaultAction: 'Allow'
+      defaultAction: 'Deny'
     }
   }
 }
@@ -96,12 +96,33 @@ resource open_ai 'Microsoft.CognitiveServices/accounts@2023-05-01' = if (deploya
   location: 'canadaeast'
   kind: 'OpenAI'
   properties: {
-    publicNetworkAccess: 'Enabled'
+    publicNetworkAccess: 'Disabled'
     customSubDomainName: 'aoai-${openAIName}'
   }
   sku: {
-  name: 'S0'
+    name: 'S0'
+  }
 }
+
+resource azure_openai_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = {
+  name: '${open_ai.name}-endpoint'
+  location: location
+  properties: {
+    subnet: {
+      id: '${vnet.id}/subnets/${subnetPrivateEndpointsName}'
+    }
+    privateLinkServiceConnections: [
+      {
+        name: 'MyConnection'
+        properties: {
+          privateLinkServiceId: open_ai.id
+          groupIds: [
+            'account'
+          ]
+        }
+      }
+    ]
+  }
 }
 
 resource cosmos_db_account 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
@@ -115,7 +136,28 @@ kind: 'GlobalDocumentDB'
       }
      ]
      databaseAccountOfferType: 'Standard'
-     publicNetworkAccess: 'Enabled'
+     publicNetworkAccess: 'Disabled'
+  }
+}
+
+resource azure_cosmos_db_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = {
+  name: '${cosmos_db_account.name}-endpoint'
+  location: location
+  properties: {
+    subnet: {
+      id: '${vnet.id}/subnets/${subnetPrivateEndpointsName}'
+    }
+    privateLinkServiceConnections: [
+      {
+        name: 'MyConnection'
+        properties: {
+          privateLinkServiceId: cosmos_db_account.id
+          groupIds: [
+            'Sql'
+          ]
+        }
+      }
+    ]
   }
 }
 
@@ -132,9 +174,30 @@ resource azure_storage_account_data 'Microsoft.Storage/storageAccounts@2019-06-0
     isHnsEnabled: true
     supportsHttpsTrafficOnly: true
     networkAcls: {
-      defaultAction: 'Allow'
+      defaultAction: 'Deny'
       bypass: 'AzureServices, Logging, Metrics'
     }
+  }
+}
+
+resource azure_storage_account_data_blob_pe 'Microsoft.Network/privateEndpoints@2020-06-01' = {
+  location: location
+  name: '${azure_storage_account_data.name}-blob-endpoint'
+  properties: {
+    subnet: {
+      id: '${vnet.id}/subnets/${subnetPrivateEndpointsName}'
+    }
+    privateLinkServiceConnections: [
+      {
+        name: '${azure_storage_account_data.name}-blob-endpoint'
+        properties: {
+          privateLinkServiceId: azure_storage_account_data.id
+          groupIds: [
+            'blob'
+          ]
+        }
+      }
+    ]
   }
 }
 
@@ -165,6 +228,27 @@ resource app_services_website 'Microsoft.Web/sites@2020-06-01' = {
     siteConfig: {
       linuxFxVersion: 'DOCKER|sampleappaoaichatgpt.azurecr.io/sample-app-aoai-chatgpt:latest'
     }
+  }
+}
+
+resource app_services_website_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = {
+  name: '${app_services_website.name}-endpoint'
+  location: location
+  properties: {
+    subnet: {
+      id: '${vnet.id}/subnets/${subnetPrivateEndpointsName}'
+    }
+    privateLinkServiceConnections: [
+      {
+        name: 'MyConnection'
+        properties: {
+          privateLinkServiceId: app_services_website.id
+          groupIds: [
+            'sites'
+          ]
+        }
+      }
+    ]
   }
 }
     
