@@ -135,6 +135,7 @@ resource doc_intelligence 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   kind: 'FormRecognizer'
   properties: {
     publicNetworkAccess: 'Disabled'
+    customSubDomainName: 'aidoc-${docIntelligenceName}'
   }
   sku: {
     name: 'S0'
