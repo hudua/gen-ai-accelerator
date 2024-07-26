@@ -8,5 +8,5 @@ az account set -s "<subscription-name>"
 Ensure you have a resource group created.
 
 ```
-az deployment group create --resource-group <resource-group-name> --template-file deploy.bicep --parameters projectcode="hudua-dev-01" deployazureopenai=False
+az deployment group create --resource-group <resource-group-name> --template-file deploy.bicep --parameters projectcode="hudua-dev-01" deployAzureOpenAI=False
 ```
