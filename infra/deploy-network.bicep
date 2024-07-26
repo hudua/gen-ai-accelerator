@@ -129,7 +129,7 @@ resource azure_openai_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = if (d
   }
 }
 
-resource doc_intelligence 'Microsoft.CognitiveServices/accounts@2023-05-01' = if (deployAzureOpenAI) {
+resource doc_intelligence 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   name: docIntelligenceName
   location: location
   kind: 'FormRecognizer'
@@ -141,7 +141,7 @@ resource doc_intelligence 'Microsoft.CognitiveServices/accounts@2023-05-01' = if
   }
 }
 
-resource doc_intelligence_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = if (deployAzureOpenAI) {
+resource doc_intelligence_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = {
   name: '${doc_intelligence.name}-endpoint'
   location: location
   properties: {
