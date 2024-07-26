@@ -104,7 +104,7 @@ resource open_ai 'Microsoft.CognitiveServices/accounts@2023-05-01' = if (deploya
   }
 }
 
-resource azure_openai_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = {
+resource azure_openai_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = if (deployazureopenai) {
   name: '${open_ai.name}-endpoint'
   location: location
   properties: {
