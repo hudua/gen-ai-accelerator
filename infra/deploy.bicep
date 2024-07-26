@@ -6,6 +6,7 @@ var openAIName = '<projectcode>-oai'
 var cosmosName = '<projectcode>-csdb'
 var storageAccountName = '<projectcode>sa'
 var appServicePlanName = '<projectcode>-asp'
+var appServiceName = '<projectcode>-as'
 
 resource azure_key_vault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: keyVaultName
@@ -100,3 +101,18 @@ resource azure_app_service_plan 'Microsoft.Web/serverfarms@2020-06-01' = {
     reserved: true
   }
 }
+
+resource app_services_website 'Microsoft.Web/sites@2020-06-01' = {
+  name: appServiceName
+  location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    serverFarmId: azure_app_service_plan.id
+    siteConfig: {
+      linuxFxVersion: DOCKER|sampleappaoaichatgpt.azurecr.io/sample-app-aoai-chatgpt:latest
+    }
+  }
+}
+    
