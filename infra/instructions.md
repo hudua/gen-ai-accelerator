@@ -14,5 +14,5 @@ az deployment group create --resource-group <resource-group-name> --template-fil
 Networking version
 
 ```
-az deployment group create --resource-group <resource-group-name> --template-file deploy.bicep --parameters projectcode="hudua-dev-01" deployAzureOpenAI=False vnetName=vnet subnetPrivateEndpointsName=default
+az deployment group create --resource-group <resource-group-name> --template-file deploy-networking.bicep --parameters projectcode="hudua-dev-01" deployAzureOpenAI=False vnetName=vnet subnetPrivateEndpointsName=default
 ```
