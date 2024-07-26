@@ -9,6 +9,7 @@ var projectcodenodashes = replace(projectcode, '-', '')
 var keyVaultName = '${projectcode}-kv'
 var searchName = '${projectcode}-ais'
 var openAIName = '${projectcode}-oai'
+var docIntelligenceName = '${projectcode}-aidoc'
 var cosmosName = '${projectcode}-csdb'
 var storageAccountName = '${projectcodenodashes}sa'
 var appServicePlanName = '${projectcode}-asp'
@@ -119,6 +120,39 @@ resource azure_openai_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = if (d
         name: 'MyConnection'
         properties: {
           privateLinkServiceId: open_ai.id
+          groupIds: [
+            'account'
+          ]
+        }
+      }
+    ]
+  }
+}
+
+resource doc_intelligence 'Microsoft.CognitiveServices/accounts@2023-05-01' = if (deployAzureOpenAI) {
+  name: docIntelligenceName
+  location: location
+  kind: 'FormRecognizer'
+  properties: {
+    publicNetworkAccess: 'Disabled'
+  }
+  sku: {
+    name: 'S0'
+  }
+}
+
+resource doc_intelligence_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = if (deployAzureOpenAI) {
+  name: '${doc_intelligence.name}-endpoint'
+  location: location
+  properties: {
+    subnet: {
+      id: '${vnet.id}/subnets/${subnetPrivateEndpointsName}'
+    }
+    privateLinkServiceConnections: [
+      {
+        name: 'MyConnection'
+        properties: {
+          privateLinkServiceId: doc_intelligence.id
           groupIds: [
             'account'
           ]
