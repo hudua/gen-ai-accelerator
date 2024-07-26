@@ -1,8 +1,8 @@
 param projectcode string
+param location string = resourceGroup().location
 param deployazureopenai bool = true
 
 var projectcodenodashes = replace(projectcode, '-', '')
-var location string = resourceGroup().location
 
 var keyVaultName = '${projectcode}-kv'
 var searchName = '${projectcode}-ais'
