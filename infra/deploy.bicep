@@ -10,7 +10,7 @@ var openAIName = '${projectcode}-oai'
 var cosmosName = '${projectcode}-csdb'
 var storageAccountName = '${projectcodenodashes}sa'
 var appServicePlanName = '${projectcode}-asp'
-var appServiceName = '<projectcode>-as'
+var appServiceName = '${projectcode}-as'
 
 resource azure_key_vault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: keyVaultName
