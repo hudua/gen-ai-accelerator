@@ -1,6 +1,8 @@
 param projectcode string
 param location string = resourceGroup().location
-param deployazureopenai bool = true
+param deployAzureOpenAI bool = true
+param vnetName string
+param subnetPrivateEndpointsName string
 
 var projectcodenodashes = replace(projectcode, '-', '')
 
@@ -11,6 +13,10 @@ var cosmosName = '${projectcode}-csdb'
 var storageAccountName = '${projectcodenodashes}sa'
 var appServicePlanName = '${projectcode}-asp'
 var appServiceName = '${projectcode}-as'
+
+resource vnet 'Microsoft.Network/virtualNetworks@2021-02-01' existing  = {
+  name: vnetName
+}
 
 resource azure_key_vault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: keyVaultName
@@ -32,6 +38,27 @@ resource azure_key_vault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   }
 }
 
+resource azure_key_vault_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = {
+  name: '${azure_key_vault.name}-pe'
+  location: location
+  properties: {
+    subnet: {
+      id: '${vnet.id}/subnets/${subnetPrivateEndpointsName}'
+    }
+    privateLinkServiceConnections: [
+      {
+        name: 'MyConnection'
+        properties: {
+          privateLinkServiceId: azure_key_vault.id
+          groupIds: [
+            'vault'
+          ]
+        }
+      }
+    ]
+  }
+}
+
 resource azure_search_service 'Microsoft.Search/searchServices@2020-08-01' = {
   name: searchName
   location: location
@@ -40,6 +67,27 @@ resource azure_search_service 'Microsoft.Search/searchServices@2020-08-01' = {
   }
   identity: {
     type: 'SystemAssigned'
+  }
+}
+
+resource azure_search_service_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = {
+  name: '${azure_search_service.name}-endpoint'
+  location: location
+  properties: {
+    subnet: {
+      id: '${vnet.id}/subnets/${subnetPrivateEndpointsName}'
+    }
+    privateLinkServiceConnections: [
+      {
+        name: 'MyConnection'
+        properties: {
+          privateLinkServiceId: azure_search_service.id
+          groupIds: [
+            'searchService'
+          ]
+        }
+      }
+    ]
   }
 }
 
