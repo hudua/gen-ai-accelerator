@@ -1,11 +1,14 @@
+param projectcode string
 
-param location string = resourceGroup().location
-var keyVaultName = '<projectcode>-kv'
-var searchName = '<projectcode>-ais'
-var openAIName = '<projectcode>-oai'
-var cosmosName = '<projectcode>-csdb'
-var storageAccountName = '<projectcode>sa'
-var appServicePlanName = '<projectcode>-asp'
+var projectcodenodashes = replace(projectcode, '-', '')
+var location string = resourceGroup().location
+
+var keyVaultName = '${projectcode}-kv'
+var searchName = '${projectcode}-ais'
+var openAIName = '${projectcode}-oai'
+var cosmosName = '${projectcode}-csdb'
+var storageAccountName = '${projectcodenodashes}sa'
+var appServicePlanName = '${projectcode}-asp'
 var appServiceName = '<projectcode>-as'
 
 resource azure_key_vault 'Microsoft.KeyVault/vaults@2019-09-01' = {
