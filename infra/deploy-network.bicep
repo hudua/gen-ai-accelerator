@@ -68,6 +68,9 @@ resource azure_search_service 'Microsoft.Search/searchServices@2020-08-01' = {
   identity: {
     type: 'SystemAssigned'
   }
+  properties: {
+    publicNetworkAccess: 'disabled'
+  }
 }
 
 resource azure_search_service_pe 'Microsoft.Network/privateEndpoints@2021-08-01' = {
