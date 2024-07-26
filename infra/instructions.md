@@ -10,3 +10,9 @@ Ensure you have a resource group created.
 ```
 az deployment group create --resource-group <resource-group-name> --template-file deploy.bicep --parameters projectcode="hudua-dev-01" deployAzureOpenAI=False
 ```
+
+Networking version
+
+```
+az deployment group create --resource-group <resource-group-name> --template-file deploy.bicep --parameters projectcode="hudua-dev-01" deployAzureOpenAI=False vnetName=vnet subnetPrivateEndpointsName=default
+```
