@@ -1,14 +1,14 @@
 param projectcode string
 param location string = resourceGroup().location
-param deployazureopenai bool = true
+param deployAzureOpenAI bool = true
 
-var projectcodenodashes = replace(projectcode, '-', '')
+var projectCodeNoDashes = replace(projectcode, '-', '')
 
 var keyVaultName = '${projectcode}-kv'
 var searchName = '${projectcode}-ais'
 var openAIName = '${projectcode}-oai'
 var cosmosName = '${projectcode}-csdb'
-var storageAccountName = '${projectcodenodashes}sa'
+var storageAccountName = '${projectCodeNoDashes}sa'
 var appServicePlanName = '${projectcode}-asp'
 var appServiceName = '${projectcode}-as'
 
@@ -43,7 +43,7 @@ resource azure_search_service 'Microsoft.Search/searchServices@2020-08-01' = {
   }
 }
 
-resource open_ai 'Microsoft.CognitiveServices/accounts@2023-05-01' = if (deployazureopenai) {
+resource open_ai 'Microsoft.CognitiveServices/accounts@2023-05-01' = if (deployAzureOpenAI) {
   name: openAIName
   location: 'canadaeast'
   kind: 'OpenAI'
