@@ -231,6 +231,7 @@ resource app_services_website 'Microsoft.Web/sites@2020-06-01' = {
     siteConfig: {
       linuxFxVersion: 'DOCKER|sampleappaoaichatgpt.azurecr.io/sample-app-aoai-chatgpt:latest'
     }
+    publicNetworkAccess: 'disabled'
   }
 }
 
